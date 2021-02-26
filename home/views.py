@@ -13,10 +13,8 @@ from datetime import datetime
 class home(TemplateView):
 
     def get(self,request):
-        last_ads=ads.objects.values()
-       
-
-
+        last_ads=ads.objects.select_related('user').values()
+        
         context={
             'last_ads':last_ads
         }
@@ -39,7 +37,7 @@ class categories(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update ( {'categ':self.kwargs['category'],'date':datetime.now().date,
-        'count':ads.objects.filter(category=self.kwargs['category']).count()})
+        'count':ads.objects.select_related('user').filter(category=self.kwargs['category']).count()})
         return context
     
     
