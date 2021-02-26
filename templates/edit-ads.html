@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+  {% block content %}
+
+<!--==================================
+=            User Profile            =
+===================================-->
+<section class="dashboard section">
+	<!-- Container Start -->
+	<div class="container">
+		<!-- Row Start -->
+		<div class="row">
+			<div class="col-md-10 offset-md-1 col-lg-4 offset-lg-0">
+				<div class="sidebar">
+					<!-- User Widget -->
+					<div class="widget user-dashboard-profile">
+						<!-- User Image -->
+						<div class="profile-thumb">
+							<img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
+						</div>
+						<!-- User Name -->
+						<h5 class="text-center">Samanta Doe</h5>
+						<p>Joined February 06, 2017</p>
+						<a href="user-profile.html" class="btn btn-main-sm">Edit Profile</a>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
+				<!-- Recently Favorited -->
+				<div class="widget dashboard-container my-adslist">
+					<h3 class="widget-header">Edit My Ads</h3>
+					<form id="form" method="post" action="{% url 'edit_ads' ads_id %}" enctype="multipart/form-data">{% csrf_token %}
+					          {{form.as_p}}
+
+							  <input type="submit" class="btn btn-transparent" value="Create">
+				    </form>
+
+
+
+			</div>
+		</div>
+		<!-- Row End -->
+	</div>
+	<!-- Container End -->
+</section>
+
+  {% endblock content %}

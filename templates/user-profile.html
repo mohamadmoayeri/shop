@@ -1,0 +1,130 @@
+{% extends 'index.html' %}
+
+ {% block content %}
+
+  <section class="user-profile section">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 offset-md-1 col-lg-3 offset-lg-0">
+				<div class="sidebar">
+					<!-- User Widget -->
+					<div class="widget user">
+						<!-- User Image -->
+						<div class="image d-flex justify-content-center">
+					   
+							{{person.image_tag}}
+						</div>
+						<!-- User Name -->
+						<a class="text-info" href="{% url "delete_avatar" user.id %}"><small>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspRemove Current Photo</small></a>
+						<h5 class="text-center">{{person.first_name}} {{person.last_name}}</h5>
+					   
+					</div>
+					<!-- Dashboard Links -->
+					<div class="widget dashboard-links">
+						<ul>
+						    
+							<li><a class="my-1 d-inline-block" href="">Savings Dashboard</a></li>
+							<li><a class="my-1 d-inline-block" href="">Saved Offer <span>(5)</span></a></li>
+							<li><a class="my-1 d-inline-block" href="">Favourite Stores <span>(3)</span></a></li>
+							<li><a class="my-1 d-inline-block" href="">Recommended</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-10 offset-md-1 col-lg-9 offset-lg-0">
+				<!-- Edit Profile Welcome Text -->
+				<div class="widget welcome-message">
+					<h2>Edit profile</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+				</div>
+				<!-- Edit Personal Info -->
+				<div class="row">
+					<div class="col-lg-6 col-md-6">
+						<div class="widget personal-info">
+							<h3 class="widget-header user">Edit Personal Information</h3>
+
+						
+							<form id="form" method="post" action="{% url 'Edit_Profile' user.id %}" enctype="multipart/form-data">{% csrf_token %}
+							    <div class="form-group">  
+								 {{form.avatar.label|title}}<br/>
+								 {{form.avatar}}<br/>
+								</div>
+							
+								<!-- username -->
+								<div class="form-group">
+								   {{form.username.label|title}}<br/>
+                                   {{form.username}}<br/>
+                                   {{form.username.errors|first|lower}}
+								</div>
+								<!-- first Name -->
+								<div class="form-group">
+
+								   {{form.first_name.label|title}}<br/>
+                                   {{form.first_name}}<br/>
+                                   {{form.first_name.errors|first|lower}}
+									
+								</div>
+								<!-- last Name -->
+								<div class="form-group">
+
+								   {{form.last_name.label|title}}<br/>
+                                   {{form.last_name}}<br/>
+                                   {{form.last_name.errors|first|lower}}
+									
+								</div>
+								<!-- email -->
+								<div class="form-group">
+
+								   {{form.email.label|title}}<br/>
+                                   {{form.email}}<br/>
+                                   {{form.email.errors|first|lower}}
+								
+									
+								</div>
+								<!-- phone -->
+								<div class="form-group">
+
+								   {{form.phone.label|title}}<br/>
+                                   {{form.phone}}<br/>
+                                   {{form.phone.errors|first|lower}}
+								   {{form.phone.help_text|lower}}
+									
+								</div>
+								
+								<input type="submit" class="btn btn-transparent" value="Save My Changes">
+							</form>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<!-- Change Password -->
+					<div class="widget change-password">
+				   
+						<h3 class="widget-header user">Change Password</h3>
+						<form id="FORM" method="post" action="{% url 'change_password' %}">{% csrf_token %}
+                                <div class="form-group">
+								   {{FORM.old_password.label|title}}<br/>
+                                   {{FORM.old_password}}<br/>
+                                   {{FORM.old_password.errors|first|lower}}
+								</div>
+								 <div class="form-group">
+								   {{FORM.new_password1.label|title}}<br/>
+                                   {{FORM.new_password1}}<br/>
+                                   {{FORM.new_password1.errors|first|lower}}
+								
+								</div>
+								 <div class="form-group">
+								   {{FORM.new_password2.label|title}}<br/>
+                                   {{FORM.new_password2}}<br/>
+                                   {{FORM.new_password2.errors|first|lower}}
+								</div>
+                                    <input type="submit" class="btn btn-transparent" value="Change My Password">
+						</form>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  </section>
+ {% endblock content %}
+
