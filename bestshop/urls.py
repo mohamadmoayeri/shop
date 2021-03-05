@@ -27,9 +27,13 @@ urlpatterns = [
 
     path('accounts/',include('accounts.urls')),
 
+    path('api_accounts/',include('api_accounts.urls')),
+
     path('profiles/',include('profiles.urls')),
 
     path('stores/',include('stores.urls')),
+
+    path('api-auth/', include('rest_framework.urls')),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     
