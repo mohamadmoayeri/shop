@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     'api_accounts',
     'profiles',
     'home',
@@ -91,14 +92,13 @@ WSGI_APPLICATION = 'bestshop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'best',
-        'PASSWORD':'best',
-        'USER':'best',
+        'NAME': 'bestshop',
+        'PASSWORD':'1234',
+        'USER':'mhmd',
         'HOST':'localhost',
         'PORT':'3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

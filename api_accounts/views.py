@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from profiles.models import User
 
-from .serializers import register_serial,login_serial
+from .serializers import register_serial,login_serial,logout_serial
 
 from rest_framework import status,viewsets,response,permissions,views,generics
 
@@ -37,10 +37,30 @@ class register(generics.CreateAPIView):
         return context
 
         
-    
+class login(generics.GenericAPIView):
+
+    serializer_class = login_serial
+
+    permission_classes=[permissions.AllowAny,]
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class logout(generics.GenericAPIView):
+    serializer_class = logout_serial
 
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return response.Response(status=status.HTTP_204_NO_CONTENT)
     
 
 

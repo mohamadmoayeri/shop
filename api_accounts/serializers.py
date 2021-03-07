@@ -41,15 +41,16 @@ class register_serial(serializers.ModelSerializer):
 
 
 class login_serial(serializers.ModelSerializer):
+    #email = serializers.EmailField(max_length=255, min_length=3,read_only=True)
+
+    password = serializers.CharField( max_length=68, min_length=3, write_only=True)
+
+    username = serializers.CharField(max_length=255, min_length=3, )
 
     tokens = serializers.SerializerMethodField()
 
-    class Meta:
-        model = User
-        fields = ['username', 'password','tokens']
-
     def get_tokens(self, obj):
-        print(obj,10000000000000000000000000000000000000000000000000000000000000)
+
         user = User.objects.get(username=obj['username'])
 
         return {
@@ -57,31 +58,49 @@ class login_serial(serializers.ModelSerializer):
             'access': user.tokens()['access']
         }
 
+    class Meta:
+        model = User
+        fields = ['email', 'password', 'username', 'tokens']
+
     def validate(self, attrs):
         username = attrs.get('username', '')
         password = attrs.get('password', '')
-        filtered_user_by_username = User.objects.filter(username=username)
-        user = auth.authenticate(username=username, password=password)
+        u= User.objects.filter(username=username)
+        if u:
+            user = auth.authenticate(username=username, password=password)
+        elif u and User.objects.get(username=username).is_authenticated:
+           raise AuthenticationFailed(detail=f'Please continue your login using {username}')
 
-        if filtered_user_by_username.exists() and filtered_user_by_username[0].auth_provider != 'username':
-            raise AuthenticationFailed(
-                detail='Please continue your login using ' + filtered_user_by_username[0].auth_provider)
-
-        if not user:
-            raise AuthenticationFailed('Invalid credentials, try again')
-        if not user.is_active:
+        elif u and  not u[0].is_active:
             raise AuthenticationFailed('Account disabled, contact admin')
-        if not user.is_verified:
-            raise AuthenticationFailed('Username is not verified')
 
-        return {
-            'username': user.username,
-            'tokens': user.tokens
-        }
+        elif not u:
+           raise AuthenticationFailed('Invalid credentials, try again ')
 
-        return super().validate(attrs)
+        
+        #if not user.is_verified:
+        #    raise AuthenticationFailed('Email is not verified')
 
+        return attrs
 
+        
+  
+class logout_serial(serializers.Serializer):
+    refresh = serializers.CharField()
 
+    default_error_message = {
+        'bad_token': ('Token is expired or invalid')
+    }
 
-    
+    def validate(self, attrs):
+        print(attrs)
+        self.token = attrs['refresh']
+        return attrs
+
+    def save(self, **kwargs):
+
+        try:
+            RefreshToken(self.token).blacklist()
+
+        except TokenError:
+            self.fail('bad_token')

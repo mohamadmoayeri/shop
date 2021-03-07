@@ -4,6 +4,8 @@ from django.db import models
 
 from django.contrib.auth.models import User,AbstractUser
 
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from django.utils.timezone import now
 
 from django.core.exceptions import ValidationError
@@ -38,6 +40,14 @@ class User(AbstractUser):
     def __str__(self):
         
         return self.username
+    
+    def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        }
+    
     def image_tag(self):
 
       if self.avatar:
