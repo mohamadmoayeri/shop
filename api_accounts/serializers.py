@@ -66,18 +66,17 @@ class login_serial(serializers.ModelSerializer):
         username = attrs.get('username', '')
         password = attrs.get('password', '')
         u= User.objects.filter(username=username)
+        user = auth.authenticate(username=username, password=password)
         if u:
-            user = auth.authenticate(username=username, password=password)
-        elif u and User.objects.get(username=username).is_authenticated:
-           raise AuthenticationFailed(detail=f'Please continue your login using {username}')
+            if not user :
 
-        elif u and  not u[0].is_active:
-            raise AuthenticationFailed('Account disabled, contact admin')
+                     raise AuthenticationFailed('Account disabled, contact admin')
+        else:
 
-        elif not u:
-           raise AuthenticationFailed('Invalid credentials, try again ')
+            if not user :
 
-        
+                     raise AuthenticationFailed('Invalid credentials, try again ') 
+
         #if not user.is_verified:
         #    raise AuthenticationFailed('Email is not verified')
 
@@ -89,11 +88,11 @@ class logout_serial(serializers.Serializer):
     refresh = serializers.CharField()
 
     default_error_message = {
-        'bad_token': ('Token is expired or invalid')
+        'bad_token': ('Token is expired or invalid'),
     }
 
     def validate(self, attrs):
-        print(attrs)
+        print(attrs,100000000000000000000000000000000000000000)
         self.token = attrs['refresh']
         return attrs
 

@@ -52,7 +52,7 @@ class login(generics.GenericAPIView):
 class logout(generics.GenericAPIView):
     serializer_class = logout_serial
 
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request):
 
